@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" manifest="slopkit.manifest">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A&M PS | FW 11.50 - 13.52 Cache</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="ambient-glow"></div>
+
+<!-- Header -->
+<header class="app-header">
+  <div class="brand-section">
+    <div class="brand-emblem">&#9670;</div>
+    <span class="brand-title">A&amp;M PS</span>
+    <span class="brand-badge">FW 11.50 - 13.52</span>
+  </div>
+
+  <div class="header-center">
+    <div class="fw-pill">
+      <span class="status-dot"></span>
+      <span>Caching System</span>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="goldhen-tag">
+      <span>&#9733;</span>
+      <span>GoldHEN v2.4b18.12</span>
+    </div>
+    <div class="clock-display" id="clock">--:--</div>
+  </div>
+</header>
+
+<!-- Main Area -->
+<main class="app-main">
+  <div class="status-card">
+    <div class="icon-wrapper">
+      <div class="spinner-outer" id="spinner-outer"></div>
+      <div class="spinner-inner"></div>
+      <div class="icon-core" id="status-icon">&#128190;</div>
+    </div>
+
+    <!-- Message target for ApplicationCache -->
+    <h1 id="msgs">Starting Cache Installation...</h1>
+
+    <!-- Progress Bar -->
+    <div class="progress-container active">
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-bar"></div>
+      </div>
+      <div class="progress-meta">
+        <span>Downloading Offline Assets...</span>
+        <span id="progress-pct">0%</span>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-chip">
+        <span>Task:</span>
+        <strong>Offline Installation</strong>
+      </div>
+      <div class="stat-chip">
+        <span>Firmware:</span>
+        <strong>11.50 - 13.52</strong>
+      </div>
+      <div class="stat-chip">
+        <span>Payload:</span>
+        <strong>GoldHEN 2.4b18.12</strong>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="app-footer">
+  <div class="credits-list">
+    <span class="credits-label">Special Thanks:</span>
+    <a href="https://twitter.com/_AlAzif" class="credit-pill" target="_blank">@_AlAzif</a>
+    <span class="credit-pill">ChendoChap</span>
+    <a href="https://x.com/Kameleonre_" class="credit-pill" target="_blank">@Kameleonre_</a>
+    <span class="credit-pill">SiSTR0</span>
+    <span class="credit-pill">Abc</span>
+  </div>
+
+  <div class="store-badge">
+    <span>A&amp;M PS STORE</span>
+  </div>
+</footer>
+
+<script>
+// Clock update
+function updateClock() {
+    var now = new Date();
+    var hours = now.getHours();
+    var m = String(now.getMinutes()).padStart(2, '0');
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    var h = hours % 12;
+    h = h ? h : 12;
+    var hStr = String(h).padStart(2, '0');
+    var el = document.getElementById('clock');
+    if (el) el.textContent = hStr + ":" + m + " " + ampm;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+history.replaceState(null, null, 'index.html');
+var histlength = history.length;
+history.go(-histlength);
+
+function DLProgress(e) {
+    var Percent = (Math.round(e.loaded / e.total * 100));
+    var bar = document.getElementById('progress-bar');
+    var pct = document.getElementById('progress-pct');
+    if (bar) bar.style.width = Percent + "%";
+    if (pct) pct.textContent = Percent + "%";
+    window.msgs.innerHTML = "Installing Offline Cache: " + Percent + "%";
+}
+
+function DisplayCacheProgress() {
+    var bar = document.getElementById('progress-bar');
+    var pct = document.getElementById('progress-pct');
+    var icon = document.getElementById('status-icon');
+    var spinner = document.getElementById('spinner-outer');
+    if (bar) bar.style.width = "100%";
+    if (pct) pct.textContent = "100%";
+    if (icon) {
+        icon.innerHTML = "&#10004;";
+        icon.style.color = "#00f0ff";
+        icon.style.textShadow = "0 0 16px rgba(0, 240, 255, 0.9)";
+    }
+    if (spinner) {
+        spinner.style.borderTopColor = "#00f0ff";
+        spinner.style.borderBottomColor = "#ff007f";
+        spinner.style.animationDuration = "3s";
+    }
+    window.msgs.innerHTML = "Cache Installed Successfully &#10004;";
+    setTimeout(function() {
+        window.msgs.innerHTML = "Now Close And Re-Open Your Browser ...";
+    }, 1500);
+}
+
+window.applicationCache.addEventListener("progress", DLProgress, false);
+window.applicationCache.oncached = function(e) { DisplayCacheProgress(); };
+window.applicationCache.onupdateready = function(e) { DisplayCacheProgress(); };
+window.applicationCache.onerror = function(e) {
+    var icon = document.getElementById('status-icon');
+    var spinner = document.getElementById('spinner-outer');
+    if (icon) {
+        icon.innerHTML = "&#9888;";
+        icon.style.color = "#ff0055";
+        icon.style.textShadow = "0 0 14px #ff0055";
+    }
+    if (spinner) {
+        spinner.style.borderTopColor = "#ff0055";
+        spinner.style.borderBottomColor = "#ff0055";
+    }
+    window.msgs.innerHTML = "Error Installing Cache! - Clear and Re-Open Your Browser ...";
+};
+</script>
+</body>
+</html>

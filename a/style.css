@@ -1,0 +1,520 @@
+:root {
+  /* Futuristic Neon Cyberpunk Palette */
+  --accent-cyan: #00f0ff;
+  --accent-cyan-glow: rgba(0, 240, 255, 0.45);
+  --accent-magenta: #ff007f;
+  --accent-magenta-glow: rgba(255, 0, 127, 0.45);
+  --accent-electric: #7928ca;
+  --neon-border: rgba(0, 240, 255, 0.35);
+
+  --hud-bg: rgba(6, 9, 18, 0.65);
+  --hud-panel: rgba(10, 14, 26, 0.72);
+  --hud-card: rgba(8, 12, 22, 0.75);
+
+  --text-white: #ffffff;
+  --text-dim: #8fa3c7;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text-white);
+  background-color: #04060c;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Background image is preserved clearly */
+body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 28px;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(4, 7, 15, 0.2) 0%, rgba(3, 5, 10, 0.8) 100%), 
+    url('ps4.png');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Corner HUD crosshairs for tech feel */
+body::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  width: 24px;
+  height: 24px;
+  border-top: 2px solid var(--accent-cyan);
+  border-left: 2px solid var(--accent-cyan);
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.7;
+}
+
+body::after {
+  content: "";
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  width: 24px;
+  height: 24px;
+  border-bottom: 2px solid var(--accent-cyan);
+  border-right: 2px solid var(--accent-cyan);
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.7;
+}
+
+.ambient-glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.12) 0%, rgba(255, 0, 127, 0.05) 50%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Structural Layout */
+.app-header, .app-main, .app-footer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1300px;
+}
+
+/* ==================== 1. TOP DOCK / SLIM HUD NAVBAR ==================== */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+  background: var(--hud-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--neon-border);
+  border-radius: 6px;
+  clip-path: polygon(14px 0%, 100% 0%, calc(100% - 14px) 100%, 0% 100%);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.7), 
+    0 0 15px rgba(0, 240, 255, 0.15),
+    inset 0 1px 0 rgba(0, 240, 255, 0.3);
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-emblem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+  color: #040711;
+  font-weight: 900;
+  font-size: 14px;
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  box-shadow: 0 0 12px var(--accent-cyan-glow);
+}
+
+.brand-title {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #ffffff 0%, var(--accent-cyan) 60%, var(--accent-magenta) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 16px var(--accent-cyan-glow);
+}
+
+.brand-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid var(--accent-cyan);
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fw-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  background: rgba(3, 6, 14, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #c9ddff;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--accent-cyan);
+  box-shadow: 0 0 10px var(--accent-cyan);
+  animation: radarBlink 1.8s infinite ease-in-out;
+}
+
+@keyframes radarBlink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.3); }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.goldhen-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: linear-gradient(135deg, rgba(255, 0, 127, 0.8), rgba(121, 40, 202, 0.8));
+  border: 1px solid var(--accent-magenta);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  box-shadow: 0 0 12px var(--accent-magenta-glow);
+}
+
+.clock-display {
+  font-family: "Consolas", monospace, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  padding: 4px 10px;
+  background: rgba(2, 4, 10, 0.8);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+/* ==================== 2. MAIN CENTER HUD DISPLAY ==================== */
+.app-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+/* Sleek Cyber Card - Angled Cut Corners */
+.status-card {
+  width: 100%;
+  max-width: 760px;
+  padding: 28px 36px;
+  background: var(--hud-card);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--neon-border);
+  clip-path: polygon(
+    20px 0, 
+    100% 0, 
+    100% calc(100% - 20px), 
+    calc(100% - 20px) 100%, 
+    0 100%, 
+    0 20px
+  );
+  box-shadow: 
+    0 16px 45px rgba(0, 0, 0, 0.85), 
+    0 0 30px rgba(0, 240, 255, 0.12),
+    inset 0 1px 0 rgba(0, 240, 255, 0.3);
+  text-align: center;
+  position: relative;
+}
+
+/* Neon Top Border Accent */
+.status-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta), transparent);
+}
+
+/* Cyber Scanning Line */
+.status-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 240, 255, 0.04) 50%, transparent 100%);
+  background-size: 100% 80px;
+  animation: scanGrid 3s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scanGrid {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+/* Hologram Spinner Reactor */
+.icon-wrapper {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 16px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner-outer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: var(--accent-cyan);
+  border-bottom-color: var(--accent-magenta);
+  filter: drop-shadow(0 0 8px var(--accent-cyan));
+  animation: reactorSpin 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.spinner-inner {
+  position: absolute;
+  width: 72%;
+  height: 72%;
+  border-radius: 50%;
+  border: 2px dashed rgba(0, 240, 255, 0.5);
+  animation: reactorSpin 3s linear infinite reverse;
+}
+
+.icon-core {
+  font-size: 24px;
+  color: var(--accent-cyan);
+  text-shadow: 0 0 14px var(--accent-cyan);
+  transition: all 0.3s ease;
+}
+
+@keyframes reactorSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* System Message Text */
+#msgs {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: #ffffff;
+  text-shadow: 0 0 14px rgba(0, 240, 255, 0.4);
+  line-height: 1.4;
+  margin-bottom: 18px;
+  min-height: 32px;
+  word-break: break-word;
+}
+
+/* Neon Cyber Progress Bar */
+.progress-container {
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto 18px auto;
+  display: none;
+}
+
+.progress-container.active {
+  display: block;
+}
+
+.progress-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(3, 5, 12, 0.8);
+  border-radius: 4px;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta));
+  box-shadow: 0 0 14px var(--accent-cyan);
+  transition: width 0.35s ease;
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+
+#progress-pct {
+  color: var(--accent-cyan);
+  font-weight: 800;
+}
+
+/* Modern HUD Status Badges */
+.stats-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(4, 7, 16, 0.7);
+  border: 1px solid rgba(0, 240, 255, 0.22);
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+}
+
+.stat-chip:hover {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.stat-chip strong {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+/* ==================== 3. BOTTOM CYBER DOCK / FOOTER ==================== */
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+  background: var(--hud-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--neon-border);
+  border-radius: 6px;
+  clip-path: polygon(0% 0%, calc(100% - 14px) 0%, 100% 100%, 14px 100%);
+  font-size: 12px;
+  color: var(--text-dim);
+  box-shadow: 
+    0 -4px 20px rgba(0, 0, 0, 0.7), 
+    0 0 15px rgba(0, 240, 255, 0.1);
+}
+
+.credits-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.credits-label {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+  font-size: 11px;
+  margin-right: 2px;
+}
+
+.credit-pill {
+  padding: 3px 9px;
+  background: rgba(0, 240, 255, 0.05);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 4px;
+  color: #c9ddff;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.credit-pill:hover {
+  background: rgba(0, 240, 255, 0.2);
+  border-color: var(--accent-cyan);
+  color: #ffffff;
+  box-shadow: 0 0 10px var(--accent-cyan-glow);
+  transform: translateY(-1px);
+}
+
+.store-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  font-size: 12px;
+  text-shadow: 0 0 10px var(--accent-cyan-glow);
+}
+
+.store-badge::before {
+  content: "⚡";
+  font-size: 12px;
+  color: var(--accent-cyan);
+  -webkit-text-fill-color: initial;
+  filter: drop-shadow(0 0 6px var(--accent-cyan));
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  body { padding: 10px; }
+  .app-header { clip-path: none; flex-direction: column; gap: 8px; padding: 10px; }
+  .status-card { clip-path: none; padding: 20px 16px; border-radius: 12px; }
+  #msgs { font-size: 18px; }
+  .app-footer { clip-path: none; flex-direction: column; gap: 8px; text-align: center; }
+}
